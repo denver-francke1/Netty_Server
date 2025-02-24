@@ -33,7 +33,7 @@ public class ServerInitializer {
                     });
 
             ChannelFuture future = bootstrap.bind(serverConfig.getPort()).sync();
-            logger.info("🚀 Netty HTTP Server started on port: {}", serverConfig.getPort());
+            logger.info(" Netty HTTP Server started on port: {}", serverConfig.getPort());
 
             future.channel().closeFuture().sync();
 
