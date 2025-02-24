@@ -11,10 +11,6 @@ public class Main {
         ServerConfig serverConfig = new ServerConfig(port);
         ServerInitializer serverInitializer = new ServerInitializer();
         serverInitializer.startServer(serverConfig);
-//        logger.trace("This is a TRACE log");
-//        logger.debug("This is a DEBUG log");
-//        logger.info("This is an INFO log");
-//        logger.warn("This is a WARN log");
-//        logger.error("This is an ERROR log");
+
     }
 }
