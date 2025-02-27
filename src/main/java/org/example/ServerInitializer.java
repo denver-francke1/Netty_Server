@@ -10,11 +10,10 @@ import org.slf4j.LoggerFactory;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 
-
 public class ServerInitializer {
     private static final Logger logger = LoggerFactory.getLogger(ServerInitializer.class);
 
-    public void startServer(ServerConfig serverConfig) throws InterruptedException {
+    public void startServer(int port) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -28,19 +27,23 @@ public class ServerInitializer {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator(65536));
-                            pipeline.addLast(new HttpRequestHandler());  // Request handler added here
+                            pipeline.addLast(new HttpRequestHandler());  // Attach request handler
                         }
                     });
 
-            ChannelFuture future = bootstrap.bind(serverConfig.getPort()).sync();
-            logger.info(" Netty HTTP Server started on port: {}", serverConfig.getPort());
+            ChannelFuture future = bootstrap.bind(port).sync();
+            logger.info("Netty HTTP Server started on port: {}", port);
 
             future.channel().closeFuture().sync();
-
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
             logger.info("Server shut down.");
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        int port = 8080; // Change this if needed
+        new ServerInitializer().startServer(port);
     }
 }
